@@ -10,3 +10,5 @@ READCOUNT INT(4) DEFAULT 0,
 IP VARCHAR(20) NOT NULL,
 IMAGE VARCHAR(40)
 );
+
+select b.* from (select a.* from (select *, @ROWNUM := @ROWNUM + 1 rnum from ALBUM order by num desc) a ) b  where rnum >=5 and rnum <=0;
