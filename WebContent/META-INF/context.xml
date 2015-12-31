@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource name="jdbc/mysql"
+			  auth="Container"
+			  type="javax.sql.DataSource"
+			  username="root"
+			  password="dntk"
+			  driverClassName="com.mysql.jdbc.Driver"
+			  factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+			  url="jdbc:mysql://localhost:3306/jsp_mvc2"
+			  maxActive="20"
+			  maxIdle="10"
+			  maxWait="10000" />
+	
+</Context>
