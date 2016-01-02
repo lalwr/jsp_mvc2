@@ -18,7 +18,7 @@ public class WriteProAction implements Action{
 		
 		Album album = new Album();
 		
-		album.setWriter(multi.getParameter("wirter"));
+		album.setWriter(multi.getParameter("writer"));
 		album.setSubject(multi.getParameter("subject"));
 		album.setEmail(multi.getParameter("email"));
 		album.setContent(multi.getParameter("content"));

@@ -11,4 +11,8 @@ IP VARCHAR(20) NOT NULL,
 IMAGE VARCHAR(40)
 );
 
-select b.* from (select a.* from (select *, @ROWNUM := @ROWNUM + 1 rnum from ALBUM order by num desc) a ) b  where rnum >=5 and rnum <=0;
+select b.* from (select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc) a ) b where rnum >=1 and rnum <=10 ;
+
+select * from album;
+
+select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc;

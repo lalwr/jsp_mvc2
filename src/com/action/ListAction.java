@@ -44,6 +44,7 @@ public class ListAction implements Action{
 		count = manager.getArticleCount(keyField, keyWord);
 		
 		if(count>0){
+			System.out.println(startRow + "," + endRow);
 			albumList = manager.getArticles(startRow, endRow, keyField, keyWord);
 		}
 		

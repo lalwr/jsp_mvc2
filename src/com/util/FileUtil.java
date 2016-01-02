@@ -10,7 +10,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class FileUtil {
 	
-	public static final String UPLOAD_PATH = "D:/develop/eclipse_workspace/jsp_mvc2/WebContent/upload";
+	public static final String UPLOAD_PATH = "/Users/mac/programing/eclipse_worksapce/jsp_mvc2/WebContent/WEB-INF";
 	public static final String ENCODING_TYPE = "utf-8";
 	public static final int MAX_SZIE = 10*1024*1024; //10M
 	

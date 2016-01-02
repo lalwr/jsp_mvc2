@@ -105,12 +105,12 @@ public class AlbumDao {
 		try {
 			conn = getConnection();
 			if(keyWord == null || "".equals(keyWord.trim())){
-				sql ="select b.* from (select a.* from (select *, @ROWNUM := @ROWNUM + 1 rnum from ALBUM order by num desc) a ) b where rnum >=? and rnum <=?";
+				sql ="select b.* from (select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc) a ) b where rnum >=? and rnum <=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, startRow);
 				pstmt.setInt(2, endRow);
 			}else{
-				sql = "select * from(select a.*, rownum rnum from(select * from ALBUM where " + keyField + " like ? order by num desc)a) where rnum >=? and rnum <=? ";
+				sql = "select b.* from(select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc where " + keyField + " like ? order by num desc)a) where rnum >=? and rnum <=? ";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, "%"+keyWord+"%");
 				pstmt.setInt(2, startRow);
@@ -122,7 +122,7 @@ public class AlbumDao {
 				do{
 					Album album = new Album();
 					album.setNum(rs.getInt("num"));
-					album.setWriter(rs.getString("wirte"));
+					album.setWriter(rs.getString("writer"));
 					album.setSubject(rs.getString("subject"));
 					album.setEmail(rs.getString("email"));
 					album.setPasswd(rs.getString("passwd"));
