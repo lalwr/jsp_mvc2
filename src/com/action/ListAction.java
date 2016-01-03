@@ -17,7 +17,7 @@ public class ListAction implements Action{
 		
 		request.setCharacterEncoding("utf-8");
 		
-		String keyField = request.getParameter("keyFiled");
+		String keyField = request.getParameter("keyField");
 		String keyWord = request.getParameter("keyWord");
 		if(keyField==null){
 			keyField="";

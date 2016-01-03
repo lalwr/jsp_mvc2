@@ -11,8 +11,15 @@ IP VARCHAR(20) NOT NULL,
 IMAGE VARCHAR(40)
 );
 
-select b.* from (select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc) a ) b where rnum >=1 and rnum <=10 ;
+select b.* from (select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc) a ) b 
+where rnum >=1 and rnum <=10 ;
 
-select * from album;
+select image from album ;
 
-select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc;
+select b.* from(select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, 
+						ALBUM  where subject like '%2%' order by num desc)a) b where rnum >=1 and rnum <=10 
+						
+select b.* from(select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, 
+						ALBUM  where  subject  like '%2%' order by num desc)a) b where rnum >=1 and rnum <=10
+						
+						select count(*) from album where subject like '%2%'

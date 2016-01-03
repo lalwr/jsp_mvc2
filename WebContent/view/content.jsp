@@ -19,7 +19,7 @@
 
 <tr>
 <td>작성자</td>
-<td>{album.writer}</td>
+<td>${album.writer}</td>
 </tr>
 
 <tr>
@@ -40,7 +40,7 @@
 <tr>
 <td>이메일</td>
 <c:if test="${!empty album.email }">
-		<td>${album.eamil }</td>
+		<td>${album.email }</td>
 </c:if>
 <c:if test="${empty album.email }">
 		<td>&nbsp;</td>
@@ -49,7 +49,7 @@
 
 <tr>
 <td>이미지</td>
-<td><img src="upload/${album.image}" /></td>
+<td><img src="../upload/${album.image}" /></td>
 </tr>
 
 <tr>
@@ -65,7 +65,7 @@
 <tr>
 <td colspan="2" align="center">
 	<input type="button" value="수정하기" onClick="location.href='updateForm.do?num=${album.num}'" >
-	<input type="button" value="삭제하기" onClick="location.href='updateForm.do?num=${album.num}'" >
+	<input type="button" value="삭제하기" onClick="location.href='deleteForm.do?num=${album.num}'" >
 	<input type="button" value="목록보기" onClick="location.href='list.do'" >
 </td>
 </tr>

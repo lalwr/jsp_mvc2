@@ -77,7 +77,7 @@ public class AlbumDao {
 				sql =  "select count(*) from ALBUM";
 				pstmt = conn.prepareStatement(sql);
 			}else{
-				sql="select count(*) from album where" + keyField + " like ? ";
+				sql="select count(*) from album where " + keyField + " like ? "; System.out.println(sql);
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, "%"+keyWord+"%");
 			}
@@ -110,7 +110,9 @@ public class AlbumDao {
 				pstmt.setInt(1, startRow);
 				pstmt.setInt(2, endRow);
 			}else{
-				sql = "select b.* from(select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, ALBUM order by num desc where " + keyField + " like ? order by num desc)a) where rnum >=? and rnum <=? ";
+				sql = "select b.* from(select a.* from (select *, @ROWNUM := @ROWNUM + 1 as rnum from (SELECT @ROWNUM:=0) R, "
+						+ "ALBUM  where " + keyField + " like ? order by num desc)a) b where rnum >=? and rnum <=? ";
+				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, "%"+keyWord+"%");
 				pstmt.setInt(2, startRow);
@@ -161,7 +163,7 @@ public class AlbumDao {
 			
 			if(rs.next()){
 				album = new Album();
-				album.setNum(rs.getInt(num));
+				album.setNum(rs.getInt("num"));
 				album.setWriter(rs.getString("writer"));
 				album.setSubject(rs.getString("subject"));
 				album.setEmail(rs.getString("email"));
@@ -180,18 +182,121 @@ public class AlbumDao {
 		return album;
 	}
 
-	public int updateReadCount(int num) {
-		// TODO Auto-generated method stub
-		return 1;
+	public int updateReadCount(int num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		String sql = null;
+		
+		try{
+			conn = getConnection();
+			
+			//조회수증가
+			sql = "update album set readcount = readcount +1 where num = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+			
+			//증가된 조회수 조회
+			sql = "select readcount from album where num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				count = rs.getInt(1);
+			}
+			
+			
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally{
+			execClose(null, pstmt, conn);
+		}
+		
+		return count;
 	}
-	public int userCheck(int num, String passwd) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	public void deleteArticle(int num) {
-		// TODO Auto-generated method stub
+	
+	public void update(Album album) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int cnt = 0;
+		String sql = null;
+		
+		try {
+			conn = getConnection();
+			sql = "update ALBUM set writer = ?, email = ?, subject = ?, image = ?, content = ? where num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(++cnt, album.getWriter());
+			pstmt.setString(++cnt, album.getEmail());
+			pstmt.setString(++cnt, album.getSubject());
+			pstmt.setString(++cnt, album.getImage());
+			pstmt.setString(++cnt, album.getContent());
+			pstmt.setInt(++cnt, album.getNum());
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			execClose(null, pstmt, conn);
+		}
 		
 	}
+	
+	public int userCheck(int num, String passwd) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String dbpasswd = "";
+		String sql="";
+		int x = -1;
+		
+		try {
+			
+			conn = getConnection();
+			sql = "select passwd from ALBUM where num = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				dbpasswd = rs.getString("passwd");
+				if(passwd.equals(passwd)){
+					x =1; //성
+				}else{
+					x=0;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			execClose(rs, pstmt, conn);
+		}
+		return x;
+	}
+	public void deleteArticle(int num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			conn = getConnection();
+			
+			sql = "delete from ALBUM where num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			execClose(null, pstmt, conn);
+		}
+		return ;
+		
+	}
+	
 	
 	
 	
@@ -201,5 +306,6 @@ public class AlbumDao {
 		if(pstmt != null) try{pstmt.close();}catch(SQLException sqle){}
 		if(conn != null) try{conn.close();}catch(SQLException sqle){}	
 	}
+	
 
 }
